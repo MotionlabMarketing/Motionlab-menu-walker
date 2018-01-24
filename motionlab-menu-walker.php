@@ -8,11 +8,25 @@
  * License: Proprietry
  **/
 
-function motionlab_menu_walker($menu, $parentId = 0) {
-    $data = motionlab_menu_walk($menu, $parentId);
+/**
+ * @param string $menuLocation Template menu location
+ * @param int $parentId Menu start level
+ * @return array Menu items
+ */
+function motionlab_menu_walker($menuLocation, $parentId = 0) {
+    $menuName       = get_term(get_nav_menu_locations()[$menuLocation], 'nav_menu')->name;
+    $data = null;
+    if(has_nav_menu($menuLocation)) {
+        $data = motionlab_menu_walk($menuName, $parentId);
+    }
     return $data;
 }
 
+/**
+ * @param string $menu
+ * @param int $parentId
+ * @return array
+ */
 function motionlab_menu_walk($menu, $parentId = 0) {
     $elements = wp_get_nav_menu_items($menu);
     $tree = [];
