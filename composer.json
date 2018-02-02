@@ -1,0 +1,17 @@
+{
+    "name": "motionlab-wordpress/menu-walker",
+    "description": "Wordpress menu walker",
+    "type": "wordpress-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sharif Khan",
+            "email": "sharif@motionlab.co.uk"
+        },
+        {
+            "name": "Karl Fletcher",
+            "email": "karl@motionlab.co.uk"
+        }
+    ],
+    "require": {}
+}
