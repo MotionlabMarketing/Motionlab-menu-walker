@@ -9,6 +9,9 @@
  **/
 
 register_activation_hook(__FILE__, 'ml_activate');
+add_filter('wp_nav_menu', 'motionlab_menu_walker', 10, 4);
+
+
 function ml_activate() {
     global $wpdb;
 
@@ -17,7 +20,7 @@ CREATE TABLE wp_ml_menus (
 	`menukey` varchar(100) primary key NOT NULL,
 	custom BOOL DEFAULT false NULL,
 	theme varchar(100) null
-)   
+)
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_general_ci';
@@ -95,7 +98,7 @@ function prefix_save_ml_menu_walker()
 
     global $wpdb;
 
-    $menus = $_POST['menus'];
+    $menus = (isset($_POST['menus']) ? $_POST['menus'] : []);
 
     $wpdb->query('TRUNCATE wp_ml_menus');
 
@@ -113,13 +116,29 @@ add_action( 'admin_post_ml_menu_walker', 'prefix_save_ml_menu_walker' );
  * @param int $parentId Menu start level
  * @return array Menu items
  */
-function motionlab_menu_walker($menuLocation, $parentId = 0) {
-    $menuName       = get_term(get_nav_menu_locations()[$menuLocation], 'nav_menu')->name;
-    $data = null;
-    if(has_nav_menu($menuLocation)) {
-        $data = motionlab_menu_walk($menuName, $parentId);
+ function motionlab_menu_walker($menu_html, $query_object) {
+    global $wpdb;
+    $selected = $wpdb->get_results('SELECT menukey FROM wp_ml_menus', 'OBJECT');
+
+    $render_menu = false;
+    foreach($selected as $menu_object) {
+        if ($menu_object->menukey === $query_object->theme_location) {
+            $render_menu = true;
+        }
     }
-    return $data;
+
+    if($render_menu) {
+        $menuLocation = $query_object->theme_location;
+
+        $menuName       = get_term(get_nav_menu_locations()[$menuLocation], 'nav_menu')->name;
+        $data = null;
+        if(has_nav_menu($menuLocation)) {
+            $data = motionlab_menu_walk($menuName);
+        }
+
+        return $data;
+    }
+
 }
 
 /**
