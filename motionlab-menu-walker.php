@@ -44,6 +44,7 @@ function menu_walker_admin()
     $selected = $wpdb->get_results($wpdb->prepare('SELECT menukey FROM wp_ml_menus', []));
 
 
+    print_r($selected);
     ?>
     <div class="wrap">
         <h1 class="class="wp-heading-inline">Motionlab Menu Walker</h1>
