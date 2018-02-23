@@ -22,7 +22,7 @@ ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
 COLLATE=utf8mb4_general_ci';
 
-    $wpdb->query($wpdb->prepare($sql, []));
+    $wpdb->query($sql);
 
 }
 
@@ -41,10 +41,8 @@ function menu_walker_admin()
     global $wpdb;
 
     $locations = get_registered_nav_menus();
-    $selected = $wpdb->get_results($wpdb->prepare('SELECT menukey FROM wp_ml_menus', []));
+    $selected = $wpdb->get_results('SELECT menukey FROM wp_ml_menus');
 
-
-    print_r($selected);
     ?>
     <div class="wrap">
         <h1 class="class="wp-heading-inline">Motionlab Menu Walker</h1>
@@ -99,10 +97,10 @@ function prefix_save_ml_menu_walker()
 
     $menus = $_POST['menus'];
 
-    $wpdb->query($wpdb->prepare('TRUNCATE wp_ml_menus', []));
+    $wpdb->query('TRUNCATE wp_ml_menus');
 
     foreach($menus as $menu) {
-        $wpdb->query($wpdb->prepare('REPLACE INTO wp_ml_menus(menukey, custom, theme) VALUES("'.$menu.'", 1, NULL)', []));
+        $wpdb->query('REPLACE INTO wp_ml_menus(menukey, custom, theme) VALUES("'.$menu.'", 1, NULL)');
         echo $menu;
     }
 
