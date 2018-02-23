@@ -108,10 +108,6 @@ function prefix_save_ml_menu_walker()
 }
 add_action( 'admin_post_ml_menu_walker', 'prefix_save_ml_menu_walker' );
 
-
-
-
-
 /**
  * @param string $menuLocation Template menu location
  * @param int $parentId Menu start level
