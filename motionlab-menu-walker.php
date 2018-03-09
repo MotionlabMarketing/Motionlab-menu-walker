@@ -19,7 +19,8 @@ function ml_activate() {
 CREATE TABLE wp_ml_menus (
 	`menukey` varchar(100) primary key NOT NULL,
 	custom BOOL DEFAULT false NULL,
-	theme varchar(100) null
+	namespace varchar(100) NULL,
+	template varchar(100) NULL
 )
 ENGINE=InnoDB
 DEFAULT CHARSET=utf8mb4
@@ -103,7 +104,7 @@ function prefix_save_ml_menu_walker()
     $wpdb->query('TRUNCATE wp_ml_menus');
 
     foreach($menus as $menu) {
-        $wpdb->query('REPLACE INTO wp_ml_menus(menukey, custom, theme) VALUES("'.$menu.'", 1, NULL)');
+        $wpdb->query('REPLACE INTO wp_ml_menus(menukey, custom, template, namespace) VALUES("'.$menu.'", 1, NULL, NULL)');
         echo $menu;
     }
 
@@ -118,7 +119,7 @@ add_action( 'admin_post_ml_menu_walker', 'prefix_save_ml_menu_walker' );
  */
  function motionlab_menu_walker($menu_html, $query_object) {
     global $wpdb;
-    $selected = $wpdb->get_results('SELECT menukey FROM wp_ml_menus', 'OBJECT');
+    $selected = $wpdb->get_results('SELECT menukey, template FROM wp_ml_menus', 'OBJECT');
 
     $render_menu = false;
     foreach($selected as $menu_object) {
@@ -136,9 +137,10 @@ add_action( 'admin_post_ml_menu_walker', 'prefix_save_ml_menu_walker' );
             $data = motionlab_menu_walk($menuName);
         }
 
-        return $data;
+        return generate_menu($data);
     }
 
+    return $menu_html;
 }
 
 /**
@@ -169,4 +171,12 @@ function motionlab_menu_walk($menu, $parentId = 0) {
         }
     }
     return $tree;
+}
+
+
+function generate_menu($menu) {
+    $menu = $menu;
+
+    //TODO: Update to use selected namespace/theme combination
+    include_once(dirname(__FILE__) . '/templates/motionlab/paprika/template.php');
 }
