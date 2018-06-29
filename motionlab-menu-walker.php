@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: Motionlab Menu Walker
- * Plugin URI: http://www.motionlab.com
+ * Plugin URI: http://www.motionlab.co.uk
  * Author: Sharif Khan
- * Author URI: http://www.motionlab.com
+ * Author URI: http://www.motionlab.co.uk
  * Version: 0.7
  * License: Proprietry
  **/
