@@ -1,0 +1,51 @@
+.ml_menu {
+    background: red;
+
+    &.ml_menu_paprike {
+
+        nav {
+
+            ul.ml_menu_ul {
+
+                li.ml_menu_li {
+
+                    &:hover {
+                        
+                    }
+
+                    a.ml_menu_link {
+
+                    }
+
+
+                    ul.ml_menu_dropdown_ul {
+
+                        li.ml_menu_dropdown_li {
+
+                        }
+
+                    }
+
+                }
+
+                &.ml_menu_has_dropdown {
+
+                }
+            }
+        }
+
+        .ml_menu_arrow_down {
+
+        }
+
+        .ml_menu_arrow_right {
+            
+        }
+
+        .ml_menu_active {
+        
+        }
+
+    }
+
+}

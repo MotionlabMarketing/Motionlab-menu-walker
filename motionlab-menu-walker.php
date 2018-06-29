@@ -194,3 +194,19 @@ function generate_menu($menu, $menuLocation) {
     //TODO: Update to use selected namespace/theme combination
     include_once(dirname(__FILE__) . '/templates/motionlab/'.$menu_options[0]->template.'/template.php');
 }
+
+
+/**
+ * ---------------------------------------------------------------------------------------------------------------------
+ * MOTIONLAB PLUGIN UTILITIES FUNCTIONS
+ * New functions used by the Motionlab plugins.
+ * ---------------------------------------------------------------------------------------------------------------------
+ */
+
+// PRINT ALL FUNCTION
+function pa($value)
+{
+    print_r("<pre style='background-color: #f1f1f1; color: black; text-align: left; padding: 1rem;'>");
+    print_r($value);
+    print_r("</pre>");
+}
