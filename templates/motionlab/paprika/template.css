@@ -14,7 +14,7 @@ li > ul{margin-bottom:0;margin-left:1.5em;}
 a{color:#222;text-decoration:none;}
 a:focus{outline:thin dotted;}
 a:hover,a:active{color:#000;outline:0;}
-.navigation-top a{color:#222;font-weight:600;-webkit-transition:color 0.2s;transition:color 0.2s;}
+.navigation-top a{color:#FF0000;font-weight:600;-webkit-transition:color 0.2s;transition:color 0.2s;}
 .main-navigation ul{background:#fff;list-style:none;margin:0;padding:0 1.5em;text-align:left;}
 .js .main-navigation ul{display:none;}
 .main-navigation ul ul{padding:0 0 0 1.5em;}

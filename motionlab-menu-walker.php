@@ -45,7 +45,7 @@ function menu_walker_admin()
     global $wpdb;
 
     $locations = get_registered_nav_menus();
-    $selected = $wpdb->get_results('SELECT menukey FROM wp_ml_menus');
+    $selected = $wpdb->get_results('SELECT menukey, template FROM wp_ml_menus');
 
     ?>
     <div class="wrap">
@@ -63,17 +63,26 @@ function menu_walker_admin()
                     <tbody class="menu-locations">
                     <tr class="menu-locations-row">
                         <td>
-                            <?php $booSelected = false; ?>
-                            <?php foreach($selected as $s): ?>
-                                <?php if($s->menukey == $key): ?>
-                                    <?php $booSelected = true; ?>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
+                            <?php $booSelected = false;
+                             foreach($selected as $s):
+
+
+                                 if($s->menukey == $key):
+                                    $booSelected = true;
+                                    $templateName = $s->template;
+                                 endif;
+                            endforeach;?>
                             <input type="checkbox" name="menus[]" id="<?php echo $key; ?>" value="<?php echo $key; ?>" <?php echo ($booSelected) ? ' checked="checked"' : ''; ?>>
                         </td>
                         <td class="menu-location-title">
                             <label for="<?php echo $key; ?>"><?php echo $location; ?></label>
 
+                        </td>
+                        <td class="menu-location-theme">
+                            <select name="themes[]">
+                                <option value="paprika" <?=$templateName == 'paprika' ? 'selected' : ''?>>Paprika</option>
+                                <option value="serrano" <?=$templateName == 'serrano' ? 'selected' : ''?>>Serrano</option>
+                            </select>
                         </td>
                     </tr>
                     </tbody>
@@ -100,12 +109,16 @@ function prefix_save_ml_menu_walker()
     global $wpdb;
 
     $menus = (isset($_POST['menus']) ? $_POST['menus'] : []);
+    $themes = (isset($_POST['themes']) ? $_POST['themes'] : []);
 
     $wpdb->query('TRUNCATE wp_ml_menus');
 
+    $i = 0;
     foreach($menus as $menu) {
-        $wpdb->query('REPLACE INTO wp_ml_menus(menukey, custom, template, namespace) VALUES("'.$menu.'", 1, NULL, NULL)');
+        $theme = $themes[$i];
+        $wpdb->query('REPLACE INTO wp_ml_menus(menukey, custom, template, namespace) VALUES("'.$menu.'", 1, "'.$theme.'", NULL)');
         echo $menu;
+        $i++;
     }
 
     wp_redirect(admin_url('admin.php?page=ml_menu-walker'));
@@ -137,7 +150,7 @@ add_action( 'admin_post_ml_menu_walker', 'prefix_save_ml_menu_walker' );
             $data = motionlab_menu_walk($menuName);
         }
 
-        return generate_menu($data);
+        return generate_menu($data, $menuLocation);
     }
 
     return $menu_html;
@@ -174,9 +187,10 @@ function motionlab_menu_walk($menu, $parentId = 0) {
 }
 
 
-function generate_menu($menu) {
-    $menu = $menu;
+function generate_menu($menu, $menuLocation) {
+    global $wpdb;
+    $menu_options = $wpdb->get_results('SELECT template FROM wp_ml_menus WHERE menukey = "'.$menuLocation.'"');
 
     //TODO: Update to use selected namespace/theme combination
-    include_once(dirname(__FILE__) . '/templates/motionlab/paprika/template.php');
+    include_once(dirname(__FILE__) . '/templates/motionlab/'.$menu_options[0]->template.'/template.php');
 }

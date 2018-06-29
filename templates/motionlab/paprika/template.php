@@ -14,7 +14,7 @@
                 <a href="<?php echo $menuitem->url ?>" class="btn border-none text-center block white bold p3 xl-p4 nowrap">
                     <?php echo $menuitem->title; ?>
                     <?php if(!empty($menuitem->children)) : ?>
-                        <small class="ml2">\/</small>
+                        <small class="ml2">&#9660;</small>
                     <?php endif; ?>
                 </a>
                 <?php if(!empty($menuitem->children)) : ?>
@@ -39,7 +39,15 @@
                             <li class="relative overflow-hidden hover-bg-white border border-right-none border-transparent <?php if($i==1) : ?>section-active<?php endif; ?>" style="margin-right:-1px;">
                                 <a href="<?php echo $second_child->url ?>" class="block black p3 bold text-decoration-none" data-toggle-section="<?php echo $second_child->ID; ?>">
                                     <?php echo $second_child->title; ?>
+                                    <?php
+                                    if(!empty($second_child->children)):
+                                    ?>
+                                            <small class="ml2" style="float:right">&#9656;</small>
+                                    <?php
+                                    endif;
+                                    ?>
                                 </a>
+
                             <ul>
                                 <?php
                                 foreach($second_child->children as $child) :
